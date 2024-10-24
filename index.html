@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* General styles */
+        :root {
+    --color-primary: #0073ff;
+    --color-white: #ffffff;
+    --color-black: #000000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: #ffffff;
+}
+
+.logo {
+    color: var(--color-black);
+    font-size: 35px;
+}
+
+.logo img {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
+}
+
+.menu-bar {
+    background-color: var(--color-white);
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.social-icons {
+            display: flex;
+            gap: 15px; /* Space between icons */
+        }
+
+        .social-icons a {
+            color:burlywood; /* Change icon color */
+            text-decoration: none; /* Remove underline */
+            font-size: 18px; /* Adjust icon size */
+        }
+
+        .social-icons a:hover {
+            color: #ffcc00; /* Change icon color on hover */
+        }
+.menu-bar ul {
+    list-style: none;
+    display: flex;
+}
+
+.menu-bar ul li {
+    padding: 10px 20px;
+    position: relative;
+}
+
+.menu-bar ul li a {
+    font-size: 20px;
+    color: rgb(17, 17, 17);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.menu-bar ul li a:hover {
+    color:#ff9933;
+}
+
+/* dropdown menu style */
+.dropdown-menu {
+  display: none;
+}
+.menu-bar ul li:hover .dropdown-menu {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background-color: white;
+}
+.menu-bar ul li:hover .dropdown-menu ul {
+  display: block;
+  margin: 10px;
+}
+.menu-bar ul li:hover .dropdown-menu ul li {
+  width: 150px;
+  padding: 10px;
+}
+.dropdown-menu-1 {
+  display: none;
+}
+.dropdown-menu ul li:hover .dropdown-menu-1 {
+  display: block;
+  position: absolute;
+  left: 150px;
+  top: 0;
+  background-color: white;
+}
+
+        .hero {
+            height: calc(100vh - 80px); /* Adjust height to account for the fixed menu */
+            background-image: url('./bg.jpg');
+            background-position: center;
+            background-size: cover;
+            padding-top: 80px; /* Ensure content starts below the fixed menu */
+        }
+        .info-boxes {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px; /* Espace modéré entre les boîtes */
+    background-color: #ffffff;
+    margin: 40px 0;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.info-box {
+    flex: 1;
+    min-width: 200px; /* Boîtes de taille modérée */
+    max-width: 320px; /* Limite la largeur des boîtes */
+    padding: 30px; /* Ajoute de l'espace à l'intérieur de la boîte */
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    margin: 10px 0;
+    font-size: 1rem;
+}
+
+.info-box h2 {
+    font-size: 1.8rem; /* Taille de titre légèrement réduite */
+    margin-bottom: 15px;
+}
+
+.info-box p {
+    font-size: 1.1rem; /* Texte légèrement réduit pour un meilleur équilibre */
+    margin: 0 auto;
+    line-height: 1.6;
+    max-width: 240px; /* Limite la largeur du texte pour une meilleure lisibilité */
+}
+
+.info-box .icon {
+    font-size: 3.5rem; /* Taille d'icône ajustée */
+    margin-bottom: 15px;
+}
+
+.info-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2); /* Ombre légère lors du survol */
+}
+
+.pink {
+    background-color: #ff4d88;
+}
+
+.green {
+    background-color: #a8d144;
+}
+
+/* Design réactif pour les écrans plus petits */
+@media (max-width: 768px) {
+    .info-boxes {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-box {
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+.video-container {
+        display: flex;
+        justify-content: center; /* Centers the video horizontally */
+        align-items: center; /* Centers the video vertically */
+        height: 100vh; /* Makes the container take up full viewport height */
+    }
+.footer {
+    background-color:#333; /* The color mix of blue, brown, and mustard */
+    color: #fff; /* White text color for contrast */
+    padding: 40px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.f-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.col {
+    flex: 1;
+    min-width: 250px;
+    margin: 20px;
+}
+
+.col h3 {
+    color:burlywood; /* Mustard accent color */
+    font-size: 1.5em; /* Increased font size */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.col p, 
+.col a {
+    color: #fff;
+    font-size: 1.1em; /* Increased font size for better readability */
+    margin-bottom: 15px; /* Added space between lines */
+    text-decoration: none;
+    line-height: 1.5; /* Improved line spacing */
+}
+
+.col a:hover {
+    color: #ff9933; /* Hover effect */
+    text-decoration: underline;
+}
+
+.logo {
+    width: 150px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.links ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.links ul li {
+    margin: 10px 0;
+}
+
+.links ul li a {
+    font-size: 1.1em; /* Increased font size for links */
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.links ul li a:hover {
+    color: #ff9933; /* Hover effect on links */
+}
+
+.newsletter input {
+    padding: 12px;
+    width: 80%;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 1.1em; /* Larger input font size */
+}
+
+.Btn-f {
+    padding: 12px 25px;
+    background-color:burlywood; /* Mustard button */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.1em; /* Increased button font size */
+}
+
+.Btn-f:hover {
+    background-color: #ffcc66; /* Lighter mustard for hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .f-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .col {
+        margin: 10px 0;
+    }
+
+    .newsletter input {
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="menu-bar">
+        <div class="logo">
+            <img src="images/logo1.jpg" alt="Logo" />
+        </div>
+        <ul>
+            <li><a href="#">Accueil</a></li>
+            <li><a href="admin.php">Qui sommes-nous? <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="mot.html">Mot Président</a></li>
+                        <li><a href="histoire.html">Notre histoire</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Nos Projets <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Portfolio</a></li>
+                        <li><a href="#">Team <i class="fas fa-caret-right"></i></a>
+                            <div class="dropdown-menu-1">
+                                <ul>
+                                    <li><a href="#">Team-1</a></li>
+                                    <li><a href="#">Team-2</a></li>
+                                    <li><a href="#">Team-3</a></li>
+                                    <li><a href="#">Team-4</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+        
+        </ul>
+      
+    </div>
+
+    <div class="hero">
+        <div class="slider">
+
+
+            <div class="list">
+    
+                <div class="item">
+                    <img src="./images/img1.jpeg" alt="">
+    
+                    <div class="content">
+                        <div class="title">Fondation Zakoura</div>
+                        <div class="type">Education</div>
+                        <div class="description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti temporibus quis eum consequuntur voluptate quae doloribus distinctio. Possimus, sed recusandae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, aut.
+                        </div>
+                        <div class="button">
+                            <button>SEE MORE</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="item">
+                    <img src="./images/img2.jpg" alt="">
+    
+                    <div class="content">
+                        <div class="title">MAGIC SLIDER</div>
+                        <div class="type">NATURE</div>
+                        <div class="description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti temporibus quis eum consequuntur voluptate quae doloribus distinctio. Possimus, sed recusandae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, aut.
+                        </div>
+                        <div class="button">
+                            <button>SEE MORE</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="item">
+                    <img src="./images/img4.jpeg" alt="">
+    
+                    <div class="content">
+                        <div class="title">Fondation Zakoura</div>
+                        <div class="type">Fondation</div>
+                        <div class="description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti temporibus quis eum consequuntur voluptate quae doloribus distinctio. Possimus, sed recusandae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, aut.
+                        </div>
+                        <div class="button">
+                            <button>SEE MORE</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="item">
+                    <img src="./images/img3.jpeg" alt="">
+    
+                    <div class="content">
+                        <div class="title">MAGIC SLIDER</div>
+                        <div class="type">NATURE</div>
+                        <div class="description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti temporibus quis eum consequuntur voluptate quae doloribus distinctio. Possimus, sed recusandae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, aut.
+                        </div>
+                        <div class="button">
+                            <button>SEE MORE</button>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+    
+            <div class="thumbnail">
+    
+                <div class="item">
+                    <img src="./images/img1.jpeg" alt="">
+                </div>
+                <div class="item">
+                    <img src="./images/img2.jpg" alt="">
+                </div>
+                <div class="item">
+                    <img src="./images/img4.jpeg" alt="">
+                </div>
+                <div class="item">
+                    <img src="./images/img3.jpeg" alt="">
+                </div>
+    
+            </div>
+    
+    
+            <div class="nextPrevArrows">
+                <button class="prev">  </button>
+                <button class="next"> > </button>
+            </div>
+    
+    
+        </div>
+    
+    
+    
+        <a href="login.php">
+        <div class="info-boxes">
+            
+            <div class="info-box pink">
+                <div class="icon">💻</div>
+                <h2>Collège Numérique CORP</h2>
+                <p>Un projet qui vise à introduire les outils numériques dans les collèges pour améliorer l'apprentissage et l'enseignement.</p>
+          
+            </div>
+        </a>
+        <a href="https://www.mamatabiaa.ma/elearning/login/index.php">
+            <div class="info-box green">
+                <div class="icon">🌿</div>
+                <h2>Mama Tabiaa</h2>
+                <p>Un projet environnemental qui enseigne aux enfants l'importance de la nature et des pratiques durables.</p>
+            </div>
+        </a>
+            <div class="info-box blue">
+                <div class="icon">🎓</div>
+                <h2>TEACHERS</h2>
+                <p>Download our free lesson plans and resources.</p>
+            </div>
+    
+            <div class="info-box orange">
+                <div class="icon">👍</div>
+                <h2>ABOUT</h2>
+                <p>Discover everything you need to know about our initiative.</p>
+            </div>
+        </div>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/9VHh0iTkGoc?si=uswyGajEhRaGhysi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        
+
+<footer class="footer">
+    <div class="f-container">
+      <div class="col">
+        <h3>CORP</h3>
+        <img
+          src="images/logo1.jpg"
+          alt=""
+          class="logo"
+        /><br /><br /><br />
+       
+      </div>
+      <div class="col">
+        <h3>Réseaux Sociaux</h3>
+        <ul class="social-links">
+          <li><a href="https://web.facebook.com/FondationZakoura" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
+          <li><a href="https://www.youtube.com/@ZakouraEducation" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+          <li><a href="https://www.instagram.com/fondationzakoura/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+          <li><a href="https://www.linkedin.com/company/fondation-zakoura-education" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+        </ul>
+      </div>
+      
+      
+      
+      <div class="col">
+        <h3>Contact</h3>
+        <div class="help">
+          <a href="#">131, Bd d’anfa 3e et 4e étage 20060 Casablanca - Maroc</a>
+          <a href="#"> 212 (0) 5 22 29 73 30</a>
+          <a href="#"> 212 (0) 6 74 90 11 15</a>
+          <a href="#">  212 (0) 5 22 26 47 77</a>
+          <a href="#"> contact@fondationzakoura.org</a>
+          <br><br>
+          <a href="#">Mentions légales</a>
+          <a href="#">Politique de confidentialité</a>
+          <a href="#">Conditions générales des dons</a>
+        </div>
+      </div>
+      <div class="col newsletter">
+        <h3>Newsletter</h3>
+        <input type="email" placeholder="Email" class="input-f" />
+        <button type="button" class="Btn-f">SUBSCRIBE</button>
+      </div>
+
+      
+
+    </div>
+  </footer>
+  
+</div>
+  </body>
+
+    <script src="app.js"></script>
+</body>
+</html>

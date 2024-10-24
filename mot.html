@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+      
+ /* General styles */
+ :root {
+    --color-primary: #0073ff;
+    --color-white: #ffffff;
+    --color-black: #000000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: #ffffff;
+}
+
+.logo {
+    color: var(--color-black);
+    font-size: 30px;
+}
+
+.logo img {
+    height: 85px;
+    width: auto;
+    object-fit: contain;
+}
+
+.menu-bar {
+    background-color: var(--color-white);
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-bar ul {
+    list-style: none;
+    display: flex;
+}
+
+.menu-bar ul li {
+    padding: 10px 20px;
+    position: relative;
+}
+
+.menu-bar ul li a {
+    font-size: 20px;
+    color: rgb(17, 17, 17);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.menu-bar ul li a:hover {
+    color:#ff9933;
+}
+
+/* dropdown menu style */
+.dropdown-menu {
+  display: none;
+}
+.menu-bar ul li:hover .dropdown-menu {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background-color: white;
+}
+.menu-bar ul li:hover .dropdown-menu ul {
+  display: block;
+  margin: 10px;
+}
+.menu-bar ul li:hover .dropdown-menu ul li {
+  width: 150px;
+  padding: 10px;
+}
+.dropdown-menu-1 {
+  display: none;
+}
+.dropdown-menu ul li:hover .dropdown-menu-1 {
+  display: block;
+  position: absolute;
+  left: 150px;
+  top: 0;
+  background-color: white;
+}
+
+        .hero {
+            height: calc(100vh - 80px); /* Adjust height to account for the fixed menu */
+            background-image: url('./bg.jpg');
+            background-position: center;
+            background-size: cover;
+            padding-top: 80px; /* Ensure content starts below the fixed menu */
+        }
+        .container {
+            margin-top: 100px;
+            max-width: 1200px;
+        }
+        .profile {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+        .profile img {
+            border-radius: 20px;
+            max-width: 350px;
+            margin-right: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.4s ease;
+        }
+        .profile img:hover {
+            transform: scale(1.05);
+        }
+        .profile-content {
+            max-width: 800px;
+        }
+        .profile-content h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color:darkslategrey;
+            font-weight: 700;
+        }
+        .profile-content p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+        .profile-content p:first-child {
+            color: #ff9933;
+        }
+        .footer {
+    background-color:#333; /* The color mix of blue, brown, and mustard */
+    color: #fff; /* White text color for contrast */
+    padding: 40px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.f-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.col {
+    flex: 1;
+    min-width: 250px;
+    margin: 20px;
+}
+
+.col h3 {
+    color:burlywood; /* Mustard accent color */
+    font-size: 1.5em; /* Increased font size */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.col p, 
+.col a {
+    color: #fff;
+    font-size: 1.1em; /* Increased font size for better readability */
+    margin-bottom: 15px; /* Added space between lines */
+    text-decoration: none;
+    line-height: 1.5; /* Improved line spacing */
+}
+
+.col a:hover {
+    color: #ff9933; /* Hover effect */
+    text-decoration: underline;
+}
+
+.logo {
+    width: 150px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.links ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.links ul li {
+    margin: 10px 0;
+}
+
+.links ul li a {
+    font-size: 1.1em; /* Increased font size for links */
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.links ul li a:hover {
+    color: #ff9933; /* Hover effect on links */
+}
+
+.newsletter input {
+    padding: 12px;
+    width: 80%;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 1.1em; /* Larger input font size */
+}
+
+.Btn-f {
+    padding: 12px 25px;
+    background-color:burlywood; /* Mustard button */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.1em; /* Increased button font size */
+}
+
+.Btn-f:hover {
+    background-color: #ffcc66; /* Lighter mustard for hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .f-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .col {
+        margin: 10px 0;
+    }
+
+    .newsletter input {
+        width: 100%;
+    }
+}
+    </style>
+    
+</head>
+<body>
+    <div class="menu-bar">
+        <div class="logo">
+            <img src="images/logo1.jpg" alt="Logo" />
+        </div>
+        <ul>
+            <li><a href="#">Accueil</a></li>
+            <li><a href="admin.php">Qui sommes-nous? <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="mot.html">Mot Président</a></li>
+                        <li><a href="histoire.html">Notre histoire</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Nos Projets <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Portfolio</a></li>
+                        <li><a href="#">Team <i class="fas fa-caret-right"></i></a>
+                            <div class="dropdown-menu-1">
+                                <ul>
+                                    <li><a href="#">Team-1</a></li>
+                                    <li><a href="#">Team-2</a></li>
+                                    <li><a href="#">Team-3</a></li>
+                                    <li><a href="#">Team-4</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+        
+        </ul>
+      
+    </div>
+    
+    <div class="container">
+        <div class="profile">
+            <img src="images/president.jpeg" alt="Profile Picture">
+            <div class="profile-content">
+                <h1>Mohammed Fikrat</h1>
+                <p>
+                    Avec plus de 25 ans d’existence, la Fondation Zakoura a une histoire riche en réussites et en réalisations. Les résultats ont été impressionnants avec des centaines de milliers de bénéficiaires ayant eu accès à une éducation de qualité et des perspectives de vie améliorées. Depuis 1997, nos programmes ont profité à 721 380 enfants, jeunes et femmes bénéficiaires directs à travers le pays. Plus de 83% sont des enfants, 9877 jeunes ont bénéficié de nos programmes d’employabilité et d’auto entrepreneuriat et 78 907 adultes ont été alphabétisés. A l’écoute des besoins des populations auxquelles elle apporte son soutien, la Fondation Zakoura est fière d’avoir été la pionnière de l’éducation non formelle (ENF) en zone rurale. A travers la création d’écoles d’ENF, la Fondation a ainsi joué un rôle décisif dans la vie et la scolarisation de plus de 22 167 enfants.
+                </p>
+                <p>
+                    Acteur de transformation du paysage de l’éducation ainsi que de la formation dans notre pays, la Fondation Zakoura est reconnue pour son travail sur les questions d’éducation, et notre pays a plus que jamais besoin de former les générations futures dès leur plus jeune âge. Assurément, notre mission prime entre autres, une éducation inclusive et de qualité pour tous.
+                </p>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="f-container">
+          <div class="col">
+            <h3>CORP</h3>
+            <img
+              src="images/logo1.jpg"
+              alt=""
+              class="logo"
+            /><br /><br /><br />
+           
+          </div>
+          <div class="col">
+            <h3>Réseaux Sociaux</h3>
+            <ul class="social-links">
+              <li><a href="https://web.facebook.com/FondationZakoura" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
+              <li><a href="https://www.youtube.com/@ZakouraEducation" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+              <li><a href="https://www.instagram.com/fondationzakoura/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+              <li><a href="https://www.linkedin.com/company/fondation-zakoura-education" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+            </ul>
+          </div>
+          
+          
+          
+          <div class="col">
+            <h3>Contact</h3>
+            <div class="help">
+              <a href="#">131, Bd d’anfa 3e et 4e étage 20060 Casablanca - Maroc</a>
+              <a href="#"> 212 (0) 5 22 29 73 30</a>
+              <a href="#"> 212 (0) 6 74 90 11 15</a>
+              <a href="#">  212 (0) 5 22 26 47 77</a>
+              <a href="#"> contact@fondationzakoura.org</a>
+              <br><br>
+              <a href="#">Mentions légales</a>
+              <a href="#">Politique de confidentialité</a>
+              <a href="#">Conditions générales des dons</a>
+            </div>
+          </div>
+          <div class="col newsletter">
+            <h3>Newsletter</h3>
+            <input type="email" placeholder="Email" class="input-f" />
+            <button type="button" class="Btn-f">SUBSCRIBE</button>
+          </div>
+    
+          
+    
+        </div>
+      </footer>
+      
+    </div>
+      
+</body>
+</html>

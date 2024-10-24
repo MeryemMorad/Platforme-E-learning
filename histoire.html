@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Timeline</title>
+    <style>
+        :root {
+            --color-primary: #0073ff;
+            --color-white: #ffffff;
+            --color-black: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: #ffffff;
+        }
+
+        .logo {
+            color: var(--color-black);
+            font-size: 35px;
+        }
+
+        .logo img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .menu-bar {
+            background-color: var(--color-white);
+            height: 80px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px; /* Space between icons */
+        }
+
+        .social-icons a {
+            color: burlywood; /* Change icon color */
+            text-decoration: none; /* Remove underline */
+            font-size: 18px; /* Adjust icon size */
+        }
+
+        .social-icons a:hover {
+            color: #ffcc00; /* Change icon color on hover */
+        }
+
+        .menu-bar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .menu-bar ul li {
+            padding: 10px 20px;
+            position: relative;
+        }
+
+        .menu-bar ul li a {
+            font-size: 20px;
+            color: rgb(17, 17, 17);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .menu-bar ul li a:hover {
+            color: #ff9933;
+        }
+
+        /* dropdown menu style */
+        .dropdown-menu {
+            display: none;
+        }
+        .menu-bar ul li:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background-color: white;
+        }
+        .menu-bar ul li:hover .dropdown-menu ul {
+            display: block;
+            margin: 10px;
+        }
+        .menu-bar ul li:hover .dropdown-menu ul li {
+            width: 150px;
+            padding: 10px;
+        }
+        .dropdown-menu-1 {
+            display: none;
+        }
+        .dropdown-menu ul li:hover .dropdown-menu-1 {
+            display: block;
+            position: absolute;
+            left: 150px;
+            top: 0;
+            background-color: white;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: auto;
+            padding: 120px 0 20px; /* Added padding-top to avoid overlap */
+        }
+
+        .timeline-item {
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeIn 0.5s forwards; /* Animation for fade in */
+            margin-bottom: 20px; /* Add space between items */
+            transition: all 0.3s ease; /* Smooth transition */
+        }
+
+        .timeline-item.left {
+            float: left; /* Align to the left */
+            animation-name: slideInLeft;
+            margin-right: 10%; /* Space between items */
+        }
+
+        .timeline-item.right {
+            float: right; /* Align to the right */
+            animation-name: slideInRight;
+            margin-left: 10%; /* Space between items */
+        }
+
+        /* Clearfix for floated elements */
+        .timeline::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Arrow indicators */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-left-color: #f0ad4e;
+            border-right: 0;
+            margin-top: -10px;
+        }
+
+        .timeline-item.left::before {
+            right: -10px;
+        }
+
+        .timeline-item.right::before {
+            left: -10px;
+            border-right-color: #f0ad4e;
+            border-left: 0;
+        }
+
+        .timeline-year {
+            background-color: #d09a53;
+            color: white;
+            padding: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 5px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .timeline-content {
+            flex-grow: 1;
+            padding-left: 20px;
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .timeline-content p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background-color: #f0ad4e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ec971f;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .timeline-item {
+                width: 100%;
+                float: none; /* Clear float for small screens */
+                left: 0 !important;
+                padding: 20px 10px;
+            }
+        }
+
+        /* Keyframes for animations */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .footer {
+    background-color:#333; /* The color mix of blue, brown, and mustard */
+    color: #fff; /* White text color for contrast */
+    padding: 40px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.f-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.col {
+    flex: 1;
+    min-width: 250px;
+    margin: 20px;
+}
+
+.col h3 {
+    color:burlywood; /* Mustard accent color */
+    font-size: 1.5em; /* Increased font size */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.col p, 
+.col a {
+    color: #fff;
+    font-size: 1.1em; /* Increased font size for better readability */
+    margin-bottom: 15px; /* Added space between lines */
+    text-decoration: none;
+    line-height: 1.5; /* Improved line spacing */
+}
+
+.col a:hover {
+    color: #ff9933; /* Hover effect */
+    text-decoration: underline;
+}
+
+.logo {
+    width: 150px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.links ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.links ul li {
+    margin: 10px 0;
+}
+
+.links ul li a {
+    font-size: 1.1em; /* Increased font size for links */
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.links ul li a:hover {
+    color: #ff9933; /* Hover effect on links */
+}
+
+.newsletter input {
+    padding: 12px;
+    width: 80%;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 1.1em; /* Larger input font size */
+}
+
+.Btn-f {
+    padding: 12px 25px;
+    background-color:burlywood; /* Mustard button */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.1em; /* Increased button font size */
+}
+
+.Btn-f:hover {
+    background-color: #ffcc66; /* Lighter mustard for hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .f-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .col {
+        margin: 10px 0;
+    }
+
+    .newsletter input {
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="menu-bar">
+        <div class="logo">
+            <img src="images/logo1.jpg" alt="Logo" />
+        </div>
+        <ul>
+            <li><a href="#">Accueil</a></li>
+            <li><a href="admin.php">Qui sommes-nous? <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="mot.html">Mot Président</a></li>
+                        <li><a href="histoire.html">Notre histoire</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Nos Projets <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Portfolio</a></li>
+                        <li><a href="#">Team <i class="fas fa-caret-right"></i></a>
+                            <div class="dropdown-menu-1">
+                                <ul>
+                                    <li><a href="#">Team-1</a></li>
+                                    <li><a href="#">Team-2</a></li>
+                                    <li><a href="#">Team-3</a></li>
+                                    <li><a href="#">Team-4</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+        
+        </ul>
+      
+    </div>
+    <div class="timeline">
+        <div class="timeline-item left">
+            <div class="timeline-year">1997</div>
+            <div class="timeline-content">
+                <h3>Création de la Fondation Zakoura Education</h3>
+                <p>En 1997, la Fondation Zakoura Education démarre son activité en lançant les premières écoles d’Education non formelle au Maroc. A cette époque, la scolarisation primaire était un véritable enjeu et surtout en milieu rural. Comment apporter les infrastructures nécessaires à la scolarisation des enfants dans les zones les plus marginalisées et difficile d’accès ? Tel était l’enjeu. Pour répondre à cette problématique, un programme innovant a été mis en place. En trois ans, des enfants de 8 à 16 ans, jamais scolarisés ou déscolarisés accèdent à une éducation qui leur fourni les bases et les compétences nécessaires pour réussir l’examen de fin de primaire</p>
+                
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2000</div>
+            <div class="timeline-content">
+                <h3>Lancement du développement intégré des douars (DID)</h3>
+                <p>Lancement du Développement Intégré des Douars (DID), regroupant l’éducation non formelle, l’alphabétisation des adultes, l’Initiation Professionnelle des jeunes, la sensibilisation des femmes à la santé et le micro-crédit.</p>
+                <button class="btn">Voir Plus</button>
+            </div>
+        </div>
+        <div class="timeline-item left">
+            <div class="timeline-year">2001</div>
+            <div class="timeline-content">
+                <h3>Mise en œuvre des modules d'alphabétisation pour adultes et des programmes de sensibilisation aux questions d'hygiène et de santé</h3>
+                <p>En s’installant dans les douars, la Fondation Zakoura ne pouvait pas rester insensibles aux besoins de la population en termes d’éducation. Les parents analphabètes étaient incapables de suivre la scolarité de leurs enfants. Les programmes d’alphabétisation développés par la Fondation ont connu un véritable succès auprès des femmes des douars, notamment des mamans des enfants, qui ont ainsi pu accéder à la lecture, à l’écriture et ont pris conscience de l’importance de l'éducation pour leurs enfants.</p>
+    
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2006</div>
+            <div class="timeline-content">
+                <h3>Lancement des programmes de préscolaire et de soutien scolaire, destinés à lutter en amont contre l'abandon scolaire.</h3>
+                <p>L’éducation au Maroc a connu d’importantes évolutions au début des années 2000. Alors que la problématique était celle de la non scolarisation en 1997, avec les efforts fournis par l’Etat en termes de scolarisation de masse au début des années 2000, elle est devenue celle de l’abandon scolaire. En effet, les politiques de scolarisation de masse ont permis un rattrapage en termes d’infrastructure et de déploiement d’écoles en milieu rural. Cependant, le Maroc s’est vu confronté à un phénomène d’abandon scolaire croissant.</p>
+              
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2007</div>
+            <div class="timeline-content">
+                <h3>Lancement des programmes intégrés.</h3>
+                <p>Lancement des programmes intégrés Shams el Ousra, Tarek El Moustaqbal et Tarbiya lil Jamii</p>
+              
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2008</div>
+            <div class="timeline-content">
+                <h3>Lancement du programme de bourses qui vient compléter ce dispositif.</h3>
+                <p>La généralisation de l’école primaire a permis à de plus en plus d’enfants d’accéder à l’éducation. Seul 25% des enfants scolarisés dans les écoles primaires des campagnes de notre pays poursuivent leur scolarité au collège. La raison principale : l’éloignement et le manque de moyens. Pour lutter contre cette déperdition, la Fondation Zakoura a mis en place un dispositif de bourse proposés aux enfants qui réussissent l’examen de fin de primaire, soit plus de 95% des enfants des écoles d’Education Non Formelle mise en place par la Fondation.</p>
+              
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2014</div>
+            <div class="timeline-content">
+                <h3>lancement de la première école numérique au Maroc.</h3>
+                <p>Le monde change, l’éducation aussi. En 2014, la Fondation Zakoura, en se basant sur les meilleures pratiques internationales, a développé la première école numérique du Royaume. Cette école offre à ses élèves et leur enseignant des tablettes tactiles et un tableau interactif comme supports à l’enseignement. L’apprentissage se fait sous forme de « Blended Learning » ou « apprentissage mixte, c’est-à-dire, un programme dans lequel les méthodes classiques d’apprentissage de face-à-face en classe sont associées à des activités assistées sur tablette ou avec le tableau interactif.</p>
+       
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2015</div>
+            <div class="timeline-content">
+                <h3>Aneer : le préscolaire communautaire</h3>
+                <p>Dans la continuité de la dynamique lancée par le Maroc pour l’amélioration et la généralisation de l’accès au préscolaire, la Fondation Zakoura a lancé ANEER, l'Action Nationale pour l'Education de la petite Enfance en zone Rurale.</p>
+               
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2016</div>
+            <div class="timeline-content">
+                <h3>Lancement du Pôle Conseil</h3>
+                <p>Dans un contexte d'extension et de diversifications de ses activités, la Fondation Zakoura a effectué sa première mission conseil : réaliser un diagnostic sur l'offre de préscolaire dans la région du Grand Casablanca-Settat.</p>
+             
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-year">2017</div>
+            <div class="timeline-content">
+                <h3>Lancement du programme d'éducation parentale</h3>
+                <p>La Fondation Zakoura a initié, en partenariat avec l’UNICEF et dans le cadre de son modèle de préscolaire ANEER, un programme d’éducation parentale et de sensibilisation communautaire permettant d’agir sur l’ensemble du cadre de vie de l’enfant et de créer un environnement propice à sa préscolarisation et son épanouissement.</p>
+                
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="f-container">
+          <div class="col">
+            <h3>CORP</h3>
+            <img
+              src="images/logo1.jpg"
+              alt=""
+              class="logo"
+            /><br /><br /><br />
+           
+          </div>
+          <div class="col">
+            <h3>Réseaux Sociaux</h3>
+            <ul class="social-links">
+              <li><a href="https://web.facebook.com/FondationZakoura" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
+              <li><a href="https://www.youtube.com/@ZakouraEducation" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+              <li><a href="https://www.instagram.com/fondationzakoura/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+              <li><a href="https://www.linkedin.com/company/fondation-zakoura-education" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+            </ul>
+          </div>
+          
+          
+          
+          <div class="col">
+            <h3>Contact</h3>
+            <div class="help">
+              <a href="#">131, Bd d’anfa 3e et 4e étage 20060 Casablanca - Maroc</a>
+              <a href="#"> 212 (0) 5 22 29 73 30</a>
+              <a href="#"> 212 (0) 6 74 90 11 15</a>
+              <a href="#">  212 (0) 5 22 26 47 77</a>
+              <a href="#"> contact@fondationzakoura.org</a>
+              <br><br>
+              <a href="#">Mentions légales</a>
+              <a href="#">Politique de confidentialité</a>
+              <a href="#">Conditions générales des dons</a>
+            </div>
+          </div>
+          <div class="col newsletter">
+            <h3>Newsletter</h3>
+            <input type="email" placeholder="Email" class="input-f" />
+            <button type="button" class="Btn-f">SUBSCRIBE</button>
+          </div>
+    
+          
+    
+        </div>
+      </footer>
+      
+    </div>
+</body>
+</html>
